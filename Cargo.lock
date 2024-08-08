@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "dsa_leetcode"
+name = "dsa_rust"
 version = "0.1.0"
