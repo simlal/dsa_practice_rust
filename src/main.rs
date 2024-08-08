@@ -8,6 +8,7 @@ mod remove_duplicates_sorted_array;
 fn list_challenges(main_dir: &Path) {
     match fs::read_dir(main_dir) {
         Ok(entries) => {
+            println!("Possible challenges are:");
             for entry in entries {
                 match entry {
                     Ok(entry) => {
@@ -43,20 +44,21 @@ fn main() {
         - Implement the challenge logic",
         program_name: &args[0],
     };
+    let source_dir = Path::new(file!()).parent().unwrap();
 
     match problem_to_run {
         Some(challenge) => match challenge.as_str() {
             "--help" => println!(
                 "{}", help_msg.base_message.replace("{}", help_msg.program_name)
             ),
+            "challenges" => list_challenges(&source_dir),
             "remove_duplicates_sorted_array" => {
                 println!("Running: <{}>...", challenge);
                 remove_duplicates_sorted_array::run();
             }
             other => {
                 println!("Unknown challenge <{}>", other);
-                println!("Possible challenges are:");
-                list_challenges(Path::new(file!()).parent().unwrap());
+                list_challenges(&source_dir);
             }
         },
         None => println!(
