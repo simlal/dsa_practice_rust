@@ -1,4 +1,4 @@
-# DSA leetcode practice in rust
+# DSA practice in rust
 
 Contains solutions to leetcode problems in rust.
 
