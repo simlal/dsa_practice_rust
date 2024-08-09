@@ -9,5 +9,5 @@ Contains solutions to leetcode problems in rust.
 3. Run the code using `cargo run challenge_name`
 
 **Help**
-To check available challenge: `cargo run challenges`
-To make sure you setup the module ok: `cargo build && ./target/debug/dsa_rust --help`
+To check available challenge: `cargo run list-challenges`
+To make sure you setup the module ok run `cargo build && ./target/debug/dsa_rust help` or simply `cargo run help`

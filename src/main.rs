@@ -47,6 +47,7 @@ fn main() {
         If challenge exists, make sure to:\n\
         - Create a new <challenge_name.rs> file\n\
         - Write pub fn run() in it\n\
+        - Add it in the match expression in `main`\n\
         - Implement the challenge logic",
         program_name: &args[0],
     };
@@ -55,11 +56,11 @@ fn main() {
 
     match problem_to_run {
         Some(problem_to_run) => {
-            if problem_to_run == "--help" {
+            if problem_to_run == "help" {
                 println!(
                     "{}", help_msg.base_message.replace("{}", help_msg.program_name)
                 );
-            } else if problem_to_run == "challenges" {
+            } else if problem_to_run == "list-challenges" {
                 get_challenges(source_dir, true);
             } else if challenges.contains(problem_to_run) {
                 println!("Running the <{}> challenge...", problem_to_run);
@@ -71,7 +72,10 @@ fn main() {
                 }
             } else {
                 println!("Unknown challenge <{}>", problem_to_run);
-                println!("Make sure the problem to run is part of {:#?}", challenges);
+                println!("Make sure the problem to run is one of:");
+                for challenge in challenges {
+                    println!("\t{}", challenge);
+                }
             }
         }
         None => println!(
