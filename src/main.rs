@@ -5,10 +5,12 @@ use std::path::Path;
 // modules for each problem
 mod remove_duplicates_sorted_array;
 
-fn list_challenges(main_dir: &Path) {
+fn get_challenges(main_dir: &Path, print_stdout: bool) -> Vec<String> {
+    // Use filestems for all non-'main.rs' files inside /src as challenges
+    let mut challenges: Vec<String> = Vec::new();
+    
     match fs::read_dir(main_dir) {
         Ok(entries) => {
-            println!("Possible challenges are:");
             for entry in entries {
                 match entry {
                     Ok(entry) => {
@@ -16,7 +18,10 @@ fn list_challenges(main_dir: &Path) {
                             continue;
                         }
                         if let Some(file_stem) = entry.path().file_stem() {
-                            println!("{}", file_stem.to_string_lossy());
+                            if print_stdout {
+                                println!("{}", file_stem.to_string_lossy());
+                            }
+                            challenges.push(file_stem.to_string_lossy().to_string());
                         }
                     },
                     Err(e) => println!("Error: {}", e)
@@ -25,6 +30,7 @@ fn list_challenges(main_dir: &Path) {
         },
         Err(e) => println!("Error: {}", e)
     }
+    challenges
 }
 
 struct HelpMessage<'a> {
@@ -45,22 +51,29 @@ fn main() {
         program_name: &args[0],
     };
     let source_dir = Path::new(file!()).parent().unwrap();
+    let challenges = get_challenges(source_dir, false);
 
     match problem_to_run {
-        Some(challenge) => match challenge.as_str() {
-            "--help" => println!(
-                "{}", help_msg.base_message.replace("{}", help_msg.program_name)
-            ),
-            "challenges" => list_challenges(&source_dir),
-            "remove_duplicates_sorted_array" => {
-                println!("Running: <{}>...", challenge);
-                remove_duplicates_sorted_array::run();
+        Some(problem_to_run) => {
+            if problem_to_run == "--help" {
+                println!(
+                    "{}", help_msg.base_message.replace("{}", help_msg.program_name)
+                );
+            } else if problem_to_run == "challenges" {
+                get_challenges(source_dir, true);
+            } else if challenges.contains(problem_to_run) {
+                println!("Running the <{}> challenge...", problem_to_run);
+                match problem_to_run.as_str() {
+                    "remove_duplicates_sorted_array" => remove_duplicates_sorted_array::run(),
+                    _ => {
+                        println!("Unknown challenge <{}>", problem_to_run);
+                    }
+                }
+            } else {
+                println!("Unknown challenge <{}>", problem_to_run);
+                println!("Make sure the problem to run is part of {:#?}", challenges);
             }
-            other => {
-                println!("Unknown challenge <{}>", other);
-                list_challenges(&source_dir);
-            }
-        },
+        }
         None => println!(
             "{}", help_msg.base_message.replace("{}", help_msg.program_name)
         ),
