@@ -5,6 +5,7 @@ use std::path::Path;
 // modules for each problem
 mod remove_duplicates_sorted_array;
 mod remove_element;
+mod get_concatenation;
 
 
 fn get_challenges(main_dir: &Path, print_stdout: bool) -> Vec<String> {
@@ -69,6 +70,7 @@ fn main() {
                 match problem_to_run.as_str() {
                     "remove_duplicates_sorted_array" => remove_duplicates_sorted_array::run(),
                     "remove_element" => remove_element::run(),
+                    "get_concatenation" => get_concatenation::run(),
                     _ => {
                         println!("Unknown challenge <{}>", problem_to_run);
                     }
