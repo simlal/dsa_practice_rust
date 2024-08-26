@@ -4,6 +4,8 @@ use std::path::Path;
 
 // modules for each problem
 mod remove_duplicates_sorted_array;
+mod remove_element;
+
 
 fn get_challenges(main_dir: &Path, print_stdout: bool) -> Vec<String> {
     // Use filestems for all non-'main.rs' files inside /src as challenges
@@ -66,6 +68,7 @@ fn main() {
                 println!("Running the <{}> challenge...", problem_to_run);
                 match problem_to_run.as_str() {
                     "remove_duplicates_sorted_array" => remove_duplicates_sorted_array::run(),
+                    "remove_element" => remove_element::run(),
                     _ => {
                         println!("Unknown challenge <{}>", problem_to_run);
                     }
